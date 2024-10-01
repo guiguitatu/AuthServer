@@ -22,4 +22,4 @@ Content-Type: application/json
 }
 
 ### Pega pelo ID
-GET localhost:8080/api/users/1
+GET localhost:8080/api/users/2
