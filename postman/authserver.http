@@ -1,0 +1,25 @@
+### ListaUsuarios
+GET localhost:8080/api/users
+
+### Cadastra User
+POST localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Guilherme",
+  "email": "gui@email.com",
+  "password": "1234"
+}
+
+###mais um
+POST localhost:8080/api/users
+Content-Type: application/json
+
+{
+"name": "Roberto",
+"email": "roberto@email.com",
+"password": "1234"
+}
+
+### Pega pelo ID
+GET localhost:8080/api/users/1
