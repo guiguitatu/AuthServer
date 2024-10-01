@@ -1,4 +1,4 @@
-package br.pucpr.authserver
+package br.pucpr.authserver.users
 
 import org.springframework.stereotype.Component
 
