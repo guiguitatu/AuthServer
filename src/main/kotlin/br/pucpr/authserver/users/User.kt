@@ -18,5 +18,8 @@ open class User (
     var password: String,
 
     @Column(nullable = false)
-    var name : String
+    var name : String,
+
+    @Column(length = 10)
+    var role : String? = "USER"
 )

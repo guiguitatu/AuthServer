@@ -2,6 +2,7 @@ package br.pucpr.authserver.users
 
 import br.pucpr.authserver.users.requests.UserRequest
 import br.pucpr.authserver.users.responses.UserResponse
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.transaction.Transactional
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -18,23 +20,28 @@ import org.springframework.web.bind.annotation.RestController
 
 class UsersController(val service: UsersService) {
 
+    @Operation(summary = "Lista todos os Usuários")
     @GetMapping()
-    fun listUsers() = service.findAll().map { it.toResponse() }
+    fun listUsers(@RequestParam("role") role: String?): List<UserResponse>
+    = service.findAll(role).map { it.toResponse() }
 
+    @Operation(summary = "Cria um novo Usuário")
     @Transactional
     @PostMapping()
     fun createUser(@RequestBody @Validated req: UserRequest) : ResponseEntity<UserResponse> {
-        val user = User(email = req.email, password = req.password, name = req.name?: req.email)
+        val user = User(email = req.email, password = req.password, role = req.role?: "USER" , name = req.name?: req.email)
         val saved = service.save(user).toResponse()
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
+    @Operation(summary = "Pega o Osuário atravéz do ID")
     @GetMapping("/{id}")
-    fun getUser(@PathVariable("id") id: Long) =
+    fun getUser(@PathVariable("id") id: Long): ResponseEntity<UserResponse> =
         service.getById(id)
-            .let { ResponseEntity.ok(it.toResponse()) }
+            .map { ResponseEntity.ok(it.toResponse()) }
+            .orElse(ResponseEntity.notFound().build())
 
-    private fun User.toResponse() = UserResponse(id!!, email, name)
+    private fun User.toResponse() = UserResponse(id!!, email, name, role)
 
 
 }

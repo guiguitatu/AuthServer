@@ -11,5 +11,7 @@ data class UserRequest(
     @field:Email
     val email: String,
     @field:Size(min = 4, max = 20)
-    val password: String
+    val password: String,
+    @field:Pattern(regexp = "^(USER|ADM)$")
+    val role: String?
 )
