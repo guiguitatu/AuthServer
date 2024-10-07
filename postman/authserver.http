@@ -33,3 +33,7 @@ Content-Type: application/json
   "email": "roberto@email.com",
   "password": "1234"
 }
+
+### Deleta User
+
+DELETE localhost:8080/api/users/2
