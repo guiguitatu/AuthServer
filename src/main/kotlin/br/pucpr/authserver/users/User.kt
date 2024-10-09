@@ -1,5 +1,6 @@
 package br.pucpr.authserver.users
 
+import br.pucpr.authserver.users.responses.UserResponse
 import jakarta.annotation.Nonnull
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
@@ -22,4 +23,8 @@ open class User (
 
     @Column(length = 10)
     var role : String? = "USER"
-)
+) {
+    fun toResponse() = UserResponse(id!!, name, email, role)
+
+}
+

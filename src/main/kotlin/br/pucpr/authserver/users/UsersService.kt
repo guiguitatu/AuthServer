@@ -1,9 +1,13 @@
 package br.pucpr.authserver.users
 
+import br.pucpr.authserver.security.Jwt
 import br.pucpr.authserver.users.requests.LoginRequest
+import br.pucpr.authserver.users.responses.LoginResponse
 import org.springframework.stereotype.Service
 @Service
 class UsersService(val repository: UsersRepository) {
+
+    val jwt = Jwt()
 
     fun save(user: User) = repository.save(user)
 
@@ -18,10 +22,12 @@ class UsersService(val repository: UsersRepository) {
 
     fun deleteById(id: Long) = repository.deleteById(id)
 
-    fun login(credentials: LoginRequest): User? {
+    fun login(credentials: LoginRequest): LoginResponse? {
         val user = repository.findUserByEmail(credentials.email!!) ?: return null
         return if (user.password != credentials.password) null
-        else user
+        else LoginResponse(
+                jwt.createToken(user), user.toResponse()
+        )
     }
 
 }

@@ -2,6 +2,7 @@ package br.pucpr.authserver.users
 
 import br.pucpr.authserver.users.requests.LoginRequest
 import br.pucpr.authserver.users.requests.UserRequest
+import br.pucpr.authserver.users.responses.LoginResponse
 import br.pucpr.authserver.users.responses.UserResponse
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.transaction.Transactional
@@ -53,10 +54,10 @@ class UsersController(val service: UsersService) {
     }
 
     @PostMapping("/login")
-    fun login(@Validated @RequestBody credentials: LoginRequest): ResponseEntity<UserResponse> =
-        service.login(credentials)
-            ?.let { ResponseEntity.ok(it.toResponse()) }
-            ?: ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+    fun login(@Validated @RequestBody credentials: LoginRequest): ResponseEntity<LoginResponse> =
+            service.login(credentials)
+                    ?.let { ResponseEntity.ok(it) }
+                    ?: ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 
 
     private fun User.toResponse() = UserResponse(id!!, email, name, role)

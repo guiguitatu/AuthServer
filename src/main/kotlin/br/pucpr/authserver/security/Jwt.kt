@@ -23,7 +23,7 @@ class Jwt {
         UserToken(
             id = user.id ?: -1,
             name = user.name,
-            roles = setOf(user.role ?: "USER")
+            role = setOf(user.role ?: "USER")
         ).let {
             Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(SECRET.toByteArray()))
@@ -53,7 +53,7 @@ class Jwt {
         if (claims.issuer != ISSUER) return null
         val user = claims.get(USER, UserToken::class.java)
 
-        val authorities = user.roles.map { SimpleGrantedAuthority("ROLE_$it") }
+        val authorities = user.role.map { SimpleGrantedAuthority("ROLE_$it") }
         return UsernamePasswordAuthenticationToken.authenticated(user, user.id, authorities)
     }
 
