@@ -12,6 +12,17 @@ Content-Type: application/json
   "role": "ADM"
 }
 
+### Cadastra User Maria
+POST localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "maria",
+  "email": "maria@email.com",
+  "password": "1234",
+  "role": "ADM"
+}
+
 ###mais um
 POST localhost:8080/api/users
 Content-Type: application/json
@@ -30,10 +41,15 @@ POST localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "email": "roberto@email.com",
+  "email": "gui@email.com",
   "password": "1234"
 }
+> {%
+client.global.set("token", response.body.token)
+client.global.set("id", response.body.user.id)
+ %}
 
 ### Deleta User
 
 DELETE localhost:8080/api/users/2
+Authorization: Bearer {{token}}

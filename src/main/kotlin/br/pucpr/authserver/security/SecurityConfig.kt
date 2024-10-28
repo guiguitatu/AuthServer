@@ -7,13 +7,13 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.DefaultSecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
 
 @Configuration
-
-class SecurityConfig {
+class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
 
     @Bean
     fun filterChain(security: HttpSecurity): DefaultSecurityFilterChain =
@@ -38,6 +38,7 @@ class SecurityConfig {
                     .requestMatchers("/h2-console/**").permitAll()
                     .anyRequest().authenticated()
             }
+            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
 
     @Bean

@@ -1,5 +1,6 @@
 package br.pucpr.authserver.users
 
+import br.pucpr.authserver.exceptions.BadRequestException
 import br.pucpr.authserver.users.requests.LoginRequest
 import br.pucpr.authserver.users.requests.UserRequest
 import br.pucpr.authserver.users.responses.LoginResponse
@@ -39,17 +40,16 @@ class UsersController(val service: UsersService) {
 
     @Operation(summary = "Deleta um Usuário pelo ID")
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable("id") id: Long): ResponseEntity<Void> {
+    fun delete(@PathVariable("id") id: Long): BadRequestException {
         return if (service.getById(id).isPresent) {
             val user = service.getById(id).get()
-            if (user.role != "ADM") {
-                service.deleteById(id)
-                ResponseEntity.ok().build()
+            return if (service.delete(id)) {
+                BadRequestException("User Not Found")
             } else {
-                ResponseEntity.notFound().build()
+                BadRequestException("Delete work")
             }
         } else {
-            ResponseEntity.notFound().build()
+            BadRequestException("User not found")
         }
     }
 
