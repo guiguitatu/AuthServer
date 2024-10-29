@@ -12,7 +12,13 @@ import org.springframework.stereotype.Service
 @Service
 class UsersService(val repository: UsersRepository, val jwt: Jwt) {
 
-    fun save(user: User) = repository.save(user)
+    fun save(user: User){
+        val email = repository.findUserByEmail(user.email)
+        if (email != null) {
+            throw BadRequestException("Email já cadastrado")
+        } else repository.save(user)
+
+    }
 
     fun getById(id: Long) = repository.findById(id)
 
