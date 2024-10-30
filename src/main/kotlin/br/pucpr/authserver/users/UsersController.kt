@@ -26,8 +26,8 @@ class UsersController(private val service: UsersService) {
     @Transactional
     @PostMapping()
     fun createUser(@RequestBody @Validated req: UserRequest) : ResponseEntity<UserResponse> {
-        val user = User(email = req.email, password = req.password, role = req.role?: "USER" , name = req.name?: req.email)
-        val saved = service.save(user).toResponse()
+        val user = User(email = req.email, password = req.password, role = req.role?: "USER", name = req.name ?: req.email)
+            val saved = service.save(user).toResponse()
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
@@ -59,8 +59,6 @@ class UsersController(private val service: UsersService) {
                     ?.let { ResponseEntity.ok(it) }
                     ?: ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 
-
-    private fun User.toResponse() = UserResponse(id!!, email, name, role)
-
+    fun User.toResponse() = UserResponse(id!!, email, name)
 
 }

@@ -24,7 +24,7 @@ open class User (
     @Column(length = 10)
     var role : String? = "USER"
 ) {
-    fun toResponse() = UserResponse(id!!, name, email, role)
+    fun toResponse() = UserResponse(id!!, name, email)
 
 }
 
