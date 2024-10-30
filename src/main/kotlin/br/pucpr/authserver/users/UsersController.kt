@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/users")
 
-class UsersController(val service: UsersService) {
+class UsersController(private val service: UsersService) {
 
     @Operation(summary = "Lista todos os Usuários")
     @GetMapping()

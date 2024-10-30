@@ -53,3 +53,33 @@ client.global.set("id", response.body.user.id)
 
 DELETE localhost:8080/api/users/2
 Authorization: Bearer {{token}}
+
+### Salva Pedido
+POST localhost:8080/api/pedido
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "numeropedido": 1,
+  "codigoproduto": 502,
+  "quantidade": 5,
+  "codgruest": 3
+}
+
+### Lista Pedidos
+GET localhost:8080/api/pedidos/1
+
+### Cadastra Produtos
+POST localhost:8080/api/produto
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "codigoProduto": 202,
+  "descricao": "batata",
+  "preco": 15
+}
+
+### Lista Produtos
+GET localhost:8080/api/produto/1
+
