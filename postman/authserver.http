@@ -60,9 +60,12 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "numeropedido": 1,
-  "codigoproduto": 502,
-  "quantidade": 5,
+  "numeropedido": 5,
+  "codigoprodutos": [
+    101
+  ],
+  "numeromesa": 5,
+  "quantidade": 1,
   "codgruest": 3
 }
 
@@ -75,9 +78,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "codigoProduto": 202,
-  "descricao": "batata",
-  "preco": 15
+  "codigoProduto": 101,
+  "descricao": "bujão",
+  "preco": 96
 }
 
 ### Lista Produtos

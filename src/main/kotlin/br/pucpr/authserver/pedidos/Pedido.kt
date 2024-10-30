@@ -16,9 +16,6 @@ open class Pedido(
     var numeromesa: Int,
 
     @Column(nullable = false)
-    var codigoProduto: Int,
-
-    @Column(nullable = false)
     var quantidade: Int,
 
     @Column(nullable = false)
@@ -30,7 +27,7 @@ open class Pedido(
         joinColumns = [JoinColumn(name = "pedido_id")],
         inverseJoinColumns = [JoinColumn(name = "produto_id")]
     )
-    var produtos: MutableSet<Produto> = mutableSetOf()
+    var produto: MutableList<Produto> = mutableListOf()
 ) {
-    fun toResponse() = PedidoResponse(id!!, numeroPedido, numeromesa, quantidade, codGruEst, produtos.map { it.codigoProduto })
+    fun toResponse() = PedidoResponse(id!!, numeroPedido, codGruEst, numeromesa, quantidade, produto.map { it.codigoProduto })
 }

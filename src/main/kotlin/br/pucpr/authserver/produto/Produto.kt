@@ -1,16 +1,11 @@
 package br.pucpr.authserver.produto
 
 import br.pucpr.authserver.pedidos.Pedido
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.Table
-
+import com.fasterxml.jackson.annotation.JsonIgnore
+import jakarta.persistence.*
 
 @Entity
-@Table(name = "tblProduto")
+@Table(name = "tblProdutos")
 open class Produto(
     @Id @GeneratedValue
     var id: Long? = null,
@@ -24,9 +19,9 @@ open class Produto(
     @Column(nullable = false)
     var preco: Double,
 
-    @ManyToMany(mappedBy = "produtos")
-    var pedidos: MutableSet<Pedido> = mutableSetOf()
-
+    @ManyToMany(mappedBy = "produto")
+    @JsonIgnore
+    var pedido: MutableSet<Pedido> = mutableSetOf()
 ) {
     fun toResponse() = ProdutoResponse(codigoProduto, descricao, preco)
 }
