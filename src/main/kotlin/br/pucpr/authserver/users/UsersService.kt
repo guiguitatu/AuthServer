@@ -2,7 +2,6 @@ package br.pucpr.authserver.users
 
 import br.pucpr.authserver.exceptions.BadRequestException
 import br.pucpr.authserver.security.Jwt
-import br.pucpr.authserver.security.SecurityProperties
 import br.pucpr.authserver.users.requests.LoginRequest
 import br.pucpr.authserver.users.responses.LoginResponse
 import org.slf4j.LoggerFactory
@@ -10,15 +9,11 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class UsersService(val repository: UsersRepository, val jwt: Jwt) {
+class UsersService(val repository: UsersRepository) {
 
-    fun save(user: User){
-        val email = repository.findUserByEmail(user.email)
-        if (email != null) {
-            throw BadRequestException("Email já cadastrado")
-        } else repository.save(user)
+    val jwt = Jwt()
 
-    }
+    fun save(user: User) = repository.save(user)
 
     fun getById(id: Long) = repository.findById(id)
 

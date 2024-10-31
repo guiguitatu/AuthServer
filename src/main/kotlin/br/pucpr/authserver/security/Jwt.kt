@@ -6,6 +6,7 @@ import io.jsonwebtoken.jackson.io.JacksonDeserializer
 import io.jsonwebtoken.jackson.io.JacksonSerializer
 import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
+import org.apache.tomcat.util.http.parser.Authorization
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -16,7 +17,7 @@ import java.time.ZonedDateTime
 import java.util.*
 
 @Component
-class Jwt(val properties: SecurityProperties) {
+class Jwt {
 
     fun createToken(user: User) =
         UserToken(
@@ -25,13 +26,13 @@ class Jwt(val properties: SecurityProperties) {
             role = setOf(user.role ?: "USER")
         ).let {
             Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(properties.token.toByteArray()))
+                .signWith(Keys.hmacShaKeyFor(SECRET.toByteArray()))
                 .serializeToJsonWith(JacksonSerializer())
                 .setIssuedAt(utcNow().toDate())
-                .setExpiration(utcNow().plusHours(properties.expHours).toDate())
-                .setIssuer(properties.issuer)
+                .setExpiration(utcNow().plusHours(EXPIRE_HOURS).toDate())
+                .setIssuer(ISSUER)
                 .setSubject(it.id.toString())
-                .addClaims(mapOf(properties.user to it))
+                .addClaims(mapOf(USER to it))
                 .compact()
         }
 
@@ -42,15 +43,15 @@ class Jwt(val properties: SecurityProperties) {
         val token = header.replace(PREFIX, "").trim()
 
         val claims = Jwts.parserBuilder()
-            .setSigningKey(properties.token.toByteArray())
+            .setSigningKey(SECRET.toByteArray())
             .deserializeJsonWith(JacksonDeserializer(
-                mapOf(properties.user to UserToken::class.java)
+                mapOf(USER to UserToken::class.java)
             )).build()
             .parseClaimsJws(token)
             .body
 
-        if (claims.issuer != properties.issuer) return null
-        val user = claims.get(properties.user, UserToken::class.java)
+        if (claims.issuer != ISSUER) return null
+        val user = claims.get(USER, UserToken::class.java)
 
         val authorities = user.role.map { SimpleGrantedAuthority("ROLE_$it") }
         return UsernamePasswordAuthenticationToken.authenticated(user, user.id, authorities)
@@ -58,6 +59,10 @@ class Jwt(val properties: SecurityProperties) {
 
     companion object{
         private const val PREFIX = "Bearer"
+        private const val ISSUER = "Minecraft"
+        private const val SECRET = "uEX#(}:@Hz!SrRG*8p[f>m!0uY[P@7Kc"
+        private const val USER = "user"
+        private const val EXPIRE_HOURS = 24L
 
         private fun ZonedDateTime.toDate(): Date = Date.from(this.toInstant())
         private fun utcNow(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
