@@ -16,11 +16,8 @@ class PedidoController(private val service: PedidoService, private val produtoSe
 
     @PostMapping()
     fun savePedido(@RequestBody req: PedidoRequest): ResponseEntity<PedidoResponse> {
-        val produtos = req.codigoprodutos.map { codigo ->
-            produtoService.getProdutoByCodigo(codigo)
-                ?: throw NotFoundException("Produto com código $codigo não encontrado")
-        }.toMutableSet() // Converte para MutableSet
-        val pedido = Pedido(numeroPedido = req.numeropedido, numeromesa = req.numeromesa, quantidade = req.quantidade, codGruEst = req.codgruest, produtos = produtos)
+
+        val pedido = Pedido(numeroPedido = req.numeropedido, numeromesa = req.numeromesa, quantidade = req.quantidade, codGruEst = req.codgruest, codigoProduto = req.codigoprodutos)
         val salvar = service.save(pedido)
         return ResponseEntity.status(HttpStatus.CREATED).body(salvar.toResponse())
     }

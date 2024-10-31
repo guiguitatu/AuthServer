@@ -7,7 +7,7 @@ data class PedidoRequest(
     @field:NotBlank
     val numeropedido: Int,
     @field:NotBlank
-    val codigoprodutos: MutableList<Int>,
+    val codigoprodutos: Int,
     @field:NotBlank
     val numeromesa: Int,
     @field:NotBlank

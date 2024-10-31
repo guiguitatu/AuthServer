@@ -19,9 +19,6 @@ open class Produto(
     @Column(nullable = false)
     var preco: Double,
 
-    @ManyToMany(mappedBy = "produto")
-    @JsonIgnore
-    var pedido: MutableSet<Pedido> = mutableSetOf()
 ) {
     fun toResponse() = ProdutoResponse(codigoProduto, descricao, preco)
 }

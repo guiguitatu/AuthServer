@@ -46,7 +46,6 @@ Content-Type: application/json
 }
 > {%
 client.global.set("token", response.body.token)
-client.global.set("id", response.body.user.id)
  %}
 
 ### Deleta User
@@ -61,12 +60,10 @@ Authorization: Bearer {{token}}
 
 {
   "numeropedido": 5,
-  "codigoprodutos": [
-    101
-  ],
-  "numeromesa": 5,
+  "codigoprodutos": 5,
+  "numeromesa": 80,
   "quantidade": 1,
-  "codgruest": 3
+  "codgruest": 1
 }
 
 ### Lista Pedidos
@@ -85,4 +82,16 @@ Authorization: Bearer {{token}}
 
 ### Lista Produtos
 GET localhost:8080/api/produto/1
+
+### Cria Mesa
+POST localhost:8080/api/mesa
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "numeroMesa": 10
+}
+
+### Lista Mesas
+GET localhost:8080/api/mesa
 

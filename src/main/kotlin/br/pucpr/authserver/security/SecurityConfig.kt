@@ -1,6 +1,6 @@
 package br.pucpr.authserver.security
 
-import jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED
+import jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -24,7 +24,7 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .exceptionHandling { it
                 .authenticationEntryPoint { _, response, authException ->
-                    response.sendError(SC_UNAUTHORIZED, authException.message)
+                    response.sendError(SC_NOT_FOUND, authException.message)
                 }
             }
             .headers { it
@@ -33,12 +33,16 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
             .authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(HttpMethod.GET).permitAll()
-                    .requestMatchers("/error/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/pedidos/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/produto/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/mesa").permitAll()
+                    .requestMatchers(HttpMethod.POST).hasRole("ADM")
+                    .requestMatchers(HttpMethod.PUT).hasRole("ADM")
+                    .requestMatchers(HttpMethod.DELETE).hasRole("ADM")
+                    .requestMatchers("/error/**").permitAll()
                     .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
+
             }
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
