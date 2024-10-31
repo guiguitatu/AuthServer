@@ -1,9 +1,10 @@
 package br.pucpr.authserver.mesa
 
+import br.pucpr.authserver.pedidos.PedidoMesa
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import java.awt.List
+import kotlin.collections.List
 
 interface MesaRepository: JpaRepository<Mesa, Long> {
 
@@ -14,5 +15,18 @@ interface MesaRepository: JpaRepository<Mesa, Long> {
 
     @Query(value = "SELECT MAX(id) FROM Mesa")
     fun findMaxId(): Long?
+
+    @Query("""
+    SELECT new br.pucpr.authserver.pedidos.PedidoMesa(
+        m.numeroMesa,
+        prod.descricao,
+        p.quantidade
+    )
+    FROM Pedido p
+    JOIN Produto prod ON p.codigoProduto = prod.codigoProduto
+    JOIN Mesa m ON p.numeromesa = m.numeroMesa
+    WHERE m.numeroMesa = :numeroMesa
+""")
+    fun findPedidosPorMesa(@Param("numeroMesa") numeroMesa: Int): List<PedidoMesa>
 
 }

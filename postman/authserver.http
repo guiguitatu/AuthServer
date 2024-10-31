@@ -59,11 +59,11 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "numeropedido": 5,
-  "codigoprodutos": 5,
-  "numeromesa": 80,
+  "numeropedido": 3,
+  "codigoprodutos": 303,
+  "numeromesa": 10,
   "quantidade": 1,
-  "codgruest": 1
+  "codgruest": 3
 }
 
 ### Lista Pedidos
@@ -75,13 +75,13 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "codigoProduto": 101,
-  "descricao": "bujão",
-  "preco": 96
+  "codigoProduto": 202,
+  "descricao": "Batata",
+  "preco": 15
 }
 
 ### Lista Produtos
-GET localhost:8080/api/produto/1
+GET localhost:8080/api/produto
 
 ### Cria Mesa
 POST localhost:8080/api/mesa
@@ -89,9 +89,9 @@ content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "numeroMesa": 10
+  "numeroMesa": 5
 }
 
 ### Lista Mesas
-GET localhost:8080/api/mesa
+GET localhost:8080/api/mesa/pedidos/5
 

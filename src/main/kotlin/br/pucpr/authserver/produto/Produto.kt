@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "tblProdutos")
+@Table(name = "tblProduto")
 open class Produto(
     @Id @GeneratedValue
     var id: Long? = null,

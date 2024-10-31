@@ -36,5 +36,7 @@ class MesaController(val repository: MesaRepository) {
     @DeleteMapping()
     fun deleteMesa(mesa: Mesa) = repository.delete(mesa)
 
+    @GetMapping("/pedidos/{numeroMesa}")
+    fun findPedidosPorMesa(@PathVariable("numeroMesa") numeroMesa: Int) = repository.findPedidosPorMesa(numeroMesa)
 
 }

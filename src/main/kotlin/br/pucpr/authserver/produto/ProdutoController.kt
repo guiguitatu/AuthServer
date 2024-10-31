@@ -1,16 +1,12 @@
 package br.pucpr.authserver.produto
 
+import br.pucpr.authserver.exceptions.BadRequestException
 import br.pucpr.authserver.exceptions.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/produto")
@@ -18,15 +14,15 @@ class ProdutoController(private val service: ProdutoService) {
 
     @Operation(summary = "Cria um novo Produto")
     @PostMapping()
-    fun createProduct(@RequestBody @Validated req: ProdutoResponse): ResponseEntity<ProdutoResponse> {
+    fun createProduct(@RequestBody @Validated req: ProdutoResponse): BadRequestException {
         val produto = Produto(codigoProduto = req.codigoProduto, descricao = req.descricao, preco = req.preco)
-        val saved = service.saveProdut(produto)
-        return ResponseEntity.status(CREATED).body(saved.toResponse())
+        service.saveProdut(produto)
+        return BadRequestException("Produto salvo com sucesso")
     }
 
     @Operation(summary = "Pega o Produto atravéz do ID")
-    @GetMapping("/{Id_do_Produto}")
-    fun getProduto(@PathVariable("codigoProduto") codigo: Long): ResponseEntity<ProdutoResponse> {
+    @GetMapping("/{IdProduto}")
+    fun getProduto(@PathVariable("IdProduto") codigo: Long): ResponseEntity<ProdutoResponse> {
         val produto = service.productGetById(codigo).orElseThrow { NotFoundException("Produto não encontrado") }
         return ResponseEntity.ok(produto.toResponse())
     }
@@ -43,6 +39,21 @@ class ProdutoController(private val service: ProdutoService) {
     fun getProdutoByCodigo(@PathVariable("codigoProduto") codigoProduto: Int): ResponseEntity<ProdutoResponse> {
         val produto = service.getProdutoByCodigo(codigoProduto) ?: throw NotFoundException("Produto não encontrado")
         return ResponseEntity.ok(produto.toResponse())
+    }
+
+    @Operation(summary = "Atualiza um Produto existente")
+    @PutMapping("/{id}")
+    fun updateProduct(@PathVariable id: Long, @RequestBody @Validated req: ProdutoResponse): ResponseEntity<ProdutoResponse> {
+        val updatedProduto = Produto(codigoProduto = req.codigoProduto, descricao = req.descricao, preco = req.preco)
+        val savedProduto = service.updateProduct(id, updatedProduto)
+        return ResponseEntity.ok(savedProduto.toResponse())
+    }
+
+    @Operation(summary = "Deleta um Produto existente")
+    @DeleteMapping("/{id}")
+    fun deleteProduct(@PathVariable id: Long): ResponseEntity<Unit> {
+        service.deleteProduct(id)
+        return ResponseEntity.noContent().build()
     }
 
 }
