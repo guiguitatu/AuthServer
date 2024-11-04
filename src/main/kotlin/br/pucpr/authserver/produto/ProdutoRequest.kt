@@ -10,5 +10,5 @@ class ProdutoRequest (
     @field:NotNull
     val preco: Double,
     @field:NotNull
-    val codGruEst: Int
+    val codGruEst: Long
 )

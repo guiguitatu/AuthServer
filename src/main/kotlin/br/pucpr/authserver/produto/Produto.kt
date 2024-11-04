@@ -20,7 +20,7 @@ open class Produto(
     var preco: Double,
 
     @Column(nullable = false)
-    var codGruEst: Int = 0,
+    var codGruEst: Long = 0,
 
 ) {
     fun toResponse() = ProdutoResponse(id, codigoProduto, descricao, preco, codGruEst)

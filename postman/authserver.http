@@ -38,9 +38,32 @@ client.global.set("token", response.body.token)
  %}
 
 ### Deleta User
-
 DELETE localhost:8080/api/users/2
 Authorization: Bearer {{token}}
+
+### Pega os CodGruEst
+GET localhost:8080/api/codgruest
+
+### Cria os CodGruEst
+POST localhost:8080/api/codgruest
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+[
+  {
+    "codGruEst": 1,
+    "descricao": "Bebidas"
+  },
+  {
+    "codGruEst": 2,
+    "descricao": "Comidas"
+  },
+  {
+    "codGruEst": 3,
+    "descricao": "Sobremesas"
+  }
+
+]
 
 ### Salva Pedido
 POST localhost:8080/api/pedido
@@ -63,12 +86,35 @@ POST localhost:8080/api/produto
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{
+[{
   "codigoProduto": 202,
   "descricao": "Batata",
   "preco": 15,
+  "codGruEst": 2
+},
+  {
+  "codigoProduto": 303,
+  "descricao": "Sorvete",
+  "preco": 10,
+  "codGruEst": 3
+},
+{
+  "codigoProduto": 404,
+  "descricao": "Cerveja",
+  "preco": 5,
   "codGruEst": 1
-}
+}, {
+    "codigoProduto": 505,
+    "descricao": "Hamburguer",
+    "preco": 20,
+    "codGruEst": 2
+},
+{
+    "codigoProduto": 606,
+    "descricao": "Refrigerante",
+    "preco": 10,
+    "codGruEst": 1
+}]
 
 ### Atualiza Produto
 PUT localhost:8080/api/produto/1

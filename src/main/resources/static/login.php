@@ -2,6 +2,18 @@
 session_start();
 date_default_timezone_set('America/Sao_Paulo');
 
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "http://localhost:8080/api/users");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$users = json_decode($response, true);
+
+if (empty($users)) {
+    $_SESSION['erro'][] = 'Nenhum garçom cadastrado';
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $garcon = isset($_POST['garcon']) ? $_POST['garcon'] : '';
     $senha = isset($_POST['password']) ? $_POST['password'] : '';
@@ -62,14 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select name="garcon" id="garcon">
                     <option value="">Selecione um garçom</option>
                     <?php
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, "http://localhost:8080/api/users");
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    $response = curl_exec($ch);
-                    curl_close($ch);
-
-                    $users = json_decode($response, true);
-
                     foreach ($users as $user) {
                         echo "<option value='{$user['email']}' name='garcon'>{$user['name']}</option>";
                     } ?>

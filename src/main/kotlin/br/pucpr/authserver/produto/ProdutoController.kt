@@ -1,5 +1,7 @@
 package br.pucpr.authserver.produto
 
+import br.pucpr.authserver.codgruest.CodGruEstRepository
+import br.pucpr.authserver.codgruest.CodGruEstService
 import br.pucpr.authserver.exceptions.BadRequestException
 import br.pucpr.authserver.exceptions.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
@@ -11,21 +13,27 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/produto")
 class ProdutoController(
     private val service: ProdutoService,
-    private val produtoRepository: ProdutoRepository
+    private val codservice: CodGruEstService
 ) {
 
-    @Operation(summary = "Cria um novo Produto")
+    @Operation(summary = "Cria um ou mais Produtos")
     @PostMapping()
-    fun createProduct(@RequestBody @Validated req: ProdutoRequest): ProdutoResponse {
-        val produto = Produto(codigoProduto = req.codigoProduto, descricao = req.descricao, preco = req.preco, codGruEst = req.codGruEst)
-        service.saveProdut(produto)
-        return ProdutoResponse(
-            id = produto.id,
-            codigoProduto = produto.codigoProduto,
-            descricao = produto.descricao,
-            preco = produto.preco,
-            codGruEst = produto.codGruEst
-        )
+    fun createProducts(@RequestBody @Validated reqList: List<ProdutoRequest>): List<ProdutoResponse> {
+        val produtos = reqList.map { req ->
+            val codGruEst = codservice.codGruEstGetById(req.codGruEst) ?: null
+            if (codGruEst == null) {
+                throw BadRequestException("Código de Grupo de Estoque não encontrado")
+            }
+            val produto = Produto(
+                codigoProduto = req.codigoProduto,
+                descricao = req.descricao,
+                preco = req.preco,
+                codGruEst = req.codGruEst
+            )
+            service.saveProdut(produto)
+            produto.toResponse()
+        }
+        return produtos
     }
 
     @Operation(summary = "Pega o Produto atravéz do ID")
@@ -37,8 +45,8 @@ class ProdutoController(
 
     @Operation(summary = "Lista todos os Produtos")
     @GetMapping
-    fun getAllProdutos(): ResponseEntity<List<ProdutoResponse>> {
-        val produtos = service.getAllProdutos().map { it.toResponse() }
+    fun getAllProdutos(): ResponseEntity<List<ProdutoResponseBusca>> {
+        val produtos = service.getAllProdutos()
         return ResponseEntity.ok(produtos)
     }
 
@@ -51,8 +59,16 @@ class ProdutoController(
 
     @Operation(summary = "Atualiza um Produto existente")
     @PutMapping("/{id}")
-    fun updateProduct(@PathVariable id: Long, @RequestBody @Validated req: ProdutoRequest): ResponseEntity<ProdutoResponse> {
-        val updatedProduto = Produto(codigoProduto = req.codigoProduto, descricao = req.descricao, preco = req.preco, codGruEst = req.codGruEst)
+    fun updateProduct(
+        @PathVariable id: Long,
+        @RequestBody @Validated req: ProdutoRequest
+    ): ResponseEntity<ProdutoResponse> {
+        val updatedProduto = Produto(
+            codigoProduto = req.codigoProduto,
+            descricao = req.descricao,
+            preco = req.preco,
+            codGruEst = req.codGruEst
+        )
         val savedProduto = service.updateProduct(id, updatedProduto)
         return ResponseEntity.ok(savedProduto.toResponse())
     }

@@ -15,7 +15,9 @@ class ProdutoService (val repository: ProdutoRepository) {
 
     fun productGetById(id: Long) = repository.findById(id)
 
-    fun getAllProdutos() = repository.findAll()
+    fun getAllProdutos(): List<ProdutoResponseBusca> {
+        return repository.findAllProdutos()
+    }
 
     fun getProdutoByCodigo(codigoProduto: Int): Produto? {
         return repository.findByCodigoProduto(codigoProduto)
