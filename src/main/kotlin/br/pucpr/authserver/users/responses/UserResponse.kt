@@ -2,7 +2,7 @@ package br.pucpr.authserver.users.responses
 
 data class UserResponse(
     val id: Long,
-    val email: String,
     val name: String,
+    val email: String,
     val role: String?
 )

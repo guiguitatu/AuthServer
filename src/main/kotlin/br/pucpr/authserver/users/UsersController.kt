@@ -45,9 +45,9 @@ class UsersController(private val service: UsersService) {
         return if (service.getById(id).isPresent) {
             val user = service.getById(id).get()
             return if (service.delete(id)) {
-                BadRequestException("User Not Found")
-            } else {
                 BadRequestException("Delete work")
+            } else {
+                BadRequestException("User Not Found")
             }
         } else {
             BadRequestException("User not found")

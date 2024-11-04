@@ -34,7 +34,7 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
                 requests
                     .requestMatchers(HttpMethod.GET).permitAll()
                     .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/mesa").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/mesa/{mesa}").permitAll()
                     .requestMatchers(HttpMethod.POST).hasRole("ADM")
                     .requestMatchers(HttpMethod.PUT).hasRole("ADM")
                     .requestMatchers(HttpMethod.DELETE).hasRole("ADM")

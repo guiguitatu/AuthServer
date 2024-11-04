@@ -9,9 +9,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class UsersService(val repository: UsersRepository) {
-
-    val jwt = Jwt()
+class UsersService(val repository: UsersRepository, val jwt: Jwt) {
 
     fun save(user: User) = repository.save(user)
 
@@ -20,9 +18,6 @@ class UsersService(val repository: UsersRepository) {
     fun findAll(role: String?): List<User> =
         if (role == null) repository.findAll()
         else repository.findallByRole(role)
-
-    @Deprecated(message = "Não implementado", replaceWith = ReplaceWith("repository.findUserByEmail(email)"))
-    fun findByEmail(email: String) = repository.findUserByEmail(email)
 
     fun login(credentials: LoginRequest): LoginResponse? {
         val user = repository.findUserByEmail(credentials.email!!) ?: return null
@@ -42,7 +37,7 @@ class UsersService(val repository: UsersRepository) {
         }
         log.warn("User Deleted. id={} name={}", user.id, user.name)
         repository.delete(user)
-        return false
+        return true
     }
 
     companion object {

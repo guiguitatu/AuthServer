@@ -19,6 +19,9 @@ open class Produto(
     @Column(nullable = false)
     var preco: Double,
 
+    @Column(nullable = false)
+    var codGruEst: Int = 0,
+
 ) {
-    fun toResponse() = ProdutoResponse(codigoProduto, descricao, preco)
+    fun toResponse() = ProdutoResponse(id, codigoProduto, descricao, preco, codGruEst)
 }

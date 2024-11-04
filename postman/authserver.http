@@ -12,18 +12,7 @@ Content-Type: application/json
   "role": "ADM"
 }
 
-### Cadastra User Maria
-POST localhost:8080/api/users
-Content-Type: application/json
-
-{
-  "name": "maria",
-  "email": "maria@email.com",
-  "password": "1234",
-  "role": "ADM"
-}
-
-###mais um
+### Cadastra User
 POST localhost:8080/api/users
 Content-Type: application/json
 
@@ -33,7 +22,7 @@ Content-Type: application/json
 "password": "1234"
 }
 
-### Pega pelo ID
+### Pega User pelo ID
 GET localhost:8080/api/users/2
 
 ### Login
@@ -77,20 +66,28 @@ Authorization: Bearer {{token}}
 {
   "codigoProduto": 202,
   "descricao": "Batata",
-  "preco": 15
+  "preco": 15,
+  "codGruEst": 1
+}
+
+### Atualiza Produto
+PUT localhost:8080/api/produto/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "codigoProduto": 202,
+  "descricao": "Batata",
+  "preco": 50.50,
+  "codGruEst": 1
 }
 
 ### Lista Produtos
 GET localhost:8080/api/produto
 
 ### Cria Mesa
-POST localhost:8080/api/mesa
-content-type: application/json
+POST localhost:8080/api/mesa/5
 Authorization: Bearer {{token}}
-
-{
-  "numeroMesa": 5
-}
 
 ### Lista Mesas
 GET localhost:8080/api/mesa/pedidos/5

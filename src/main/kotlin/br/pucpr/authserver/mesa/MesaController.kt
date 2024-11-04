@@ -2,6 +2,8 @@ package br.pucpr.authserver.mesa
 
 import br.pucpr.authserver.exceptions.BadRequestException
 import br.pucpr.authserver.produto.ProdutoRepository
+import io.swagger.v3.oas.annotations.Operation
+import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -11,31 +13,35 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/mesa")
 class MesaController(val repository: MesaRepository) {
 
-    @PostMapping()
-    fun saveMesa(@RequestBody mesa: MesaRequest): ResponseEntity<MesaResponse> {
-        val mesaAberta = repository.findAbertaByNumeroMesa(mesa.numeroMesa) ?: "N"
+    @Operation(summary = "Abre uma mesa")
+    @PostMapping("/{mesa}")
+    fun saveMesa(@RequestBody @PathVariable mesa: Int): ResponseEntity<MesaResponse> {
         val id = repository.findMaxId()?.plus(1)
-        val bacias = repository.findByNumeroMesa(mesa.numeroMesa)
-        var batata: Boolean = true
+        val bacias = repository.findByNumeroMesa(mesa)
+        var aberta = true
         bacias.map {
-            if (it.numeroMesa == mesa.numeroMesa) batata = false
+            if (it.numeroMesa == mesa) aberta = false
         }
-        if (mesaAberta != "S" && batata) {
-            val lindonjohnson = Mesa(id = id, numeroMesa = mesa.numeroMesa, fechada = "N")
+        if (aberta) {
+            val lindonjohnson = Mesa(id = id, numeroMesa = mesa, fechada = "N")
             val sim = repository.save(lindonjohnson)
             return ResponseEntity.status(CREATED).body(sim.toResponse())
         } else throw BadRequestException("Mesa já está aberta")
     }
 
+    @Operation(summary = "Verifica todas as mesas")
     @GetMapping()
     fun findAll(): List<Mesa> = repository.findAll()
 
+    @Operation(summary = "Verifica mesa por número")
     @GetMapping("/{numeroMesa}")
     fun findByNumeroMesa(@PathVariable numeroMesa: Int): Array<Mesa> = repository.findByNumeroMesa(numeroMesa)
 
+    @Operation(summary = "Deleta a mesa")
     @DeleteMapping()
     fun deleteMesa(mesa: Mesa) = repository.delete(mesa)
 
+    @Operation(summary = "Verifica os pedidos desta mesa")
     @GetMapping("/pedidos/{numeroMesa}")
     fun findPedidosPorMesa(@PathVariable("numeroMesa") numeroMesa: Int) = repository.findPedidosPorMesa(numeroMesa)
 
