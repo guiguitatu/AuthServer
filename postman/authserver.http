@@ -30,7 +30,7 @@ POST localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "email": "gui@email.com",
+  "email": "gui@gmail.com",
   "password": "1234"
 }
 > {%
@@ -70,13 +70,13 @@ POST localhost:8080/api/pedido
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{
-  "numeropedido": 3,
-  "codigoprodutos": 303,
-  "numeromesa": 10,
-  "quantidade": 1,
-  "codgruest": 3
-}
+[  {
+    "codigoprodutos":10,
+   "numeromesa":5,
+   "quantidade":1,
+   "observacao":"",
+   "codgruest":2
+  }]
 
 ### Lista Pedidos
 GET localhost:8080/api/pedidos/1

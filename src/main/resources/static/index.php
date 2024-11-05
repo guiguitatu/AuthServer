@@ -5,6 +5,20 @@ if (!$_COOKIE['token']) {
     header('Location: login.php');
     exit();
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $mesa = isset($_POST['mesa']) ? $_POST['mesa'] : '';
+
+    if (empty($mesa)) {
+        $_SESSION['erro'][] = 'Digite o número da mesa';
+        header('Location: index.php');
+    } else {
+        $_SESSION['mesa'] = $mesa;
+        header('Location: abremesa.php');
+        exit();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,10 +35,6 @@ if (!$_COOKIE['token']) {
 </head>
 <div class="main">
     <?php
-    echo ' <div style="display: flex; flex-direction: row;justify-content: center; align-items: center; margin: 20px 0 20px">
-                   <a href="sairusuario.php" style="text-decoration: none;"> <button class="btnlimpa" style="background-color: #ec5858; margin-left:30px; font-size:20px;">Sair</button></a>
-               </div>
-             ';
     if (isset($_SESSION['erro'])) {
         echo '<div class="erro2">';
         foreach ($_SESSION['erro'] as $erro) {
@@ -36,13 +46,7 @@ if (!$_COOKIE['token']) {
 
     echo '<form action=' . htmlspecialchars($_SERVER['PHP_SELF']) . ' method="post" class="form">';
     ?>
-    <div style="display: none; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 0 0 40px;">
-        <div style="display: flex; align-items: center">
-            <input type="radio" id="mesa" name="opcao" value="mesa" onchange="mudanome()" checked
-                   style="width: 25px; height: 25px;">
-            <label for="opcao1">Mesa</label>
-        </div>
-    </div>
+
     <label for="mesa" id="txtinput" style="display: flex; justify-content: center">Digite o numero da mesa:</label>
     <div class="btns">
         <input type="text" id="nunmesa" name="mesa" pattern="[0-9]+" title="Número da mesa" readonly class="input">
@@ -68,16 +72,9 @@ if (!$_COOKIE['token']) {
         <button type="button" class="zero" onclick="mudanum(0)">0</button>
         <button type="button" class="btnnums" onclick="backspace()">⌫</button>
     </div>
-    <button type="submit" style="margin-top: 5px; font-size: 30px">Enviar</button>
+    <button type="submit" style="width: 100% ;margin-top: 5px; font-size: 30px">Enviar</button>
     </form>
 </div>
-<header>
-    <div style="position: absolute; z-index: 5; left: 15px; height: 95%; align-items: center; display: flex; justify-content: center">
-        <a href="config.php">
-            <button class="btnconfig"><img src="./imgs/config.png" style="height: 80%"/></button>
-        </a>
-    </div>
-</header>
 <script>
 
     function limpa() {
@@ -97,17 +94,6 @@ if (!$_COOKIE['token']) {
         inp.value = inp.value.slice(0, -1);
     }
 
-    function mudanome() {
-        let mesa = document.getElementById("mesa");
-        let ficha = document.getElementById("ficha");
-        let label = document.getElementById("txtinput");
-
-        if (mesa.checked) {
-            label.textContent = "Digite o número da mesa:";
-        } else if (ficha.checked) {
-            label.textContent = "Digite o número da ficha:";
-        }
-    }
 </script>
 </body>
 </html>

@@ -15,10 +15,20 @@ class PedidoController(private val service: PedidoService, private val produtoSe
         service.listaPedidos(pedido)
 
     @PostMapping()
-    fun savePedido(@RequestBody req: PedidoRequest): ResponseEntity<PedidoResponse> {
-
-        val pedido = Pedido(numeroPedido = req.numeropedido, numeromesa = req.numeromesa, quantidade = req.quantidade, codGruEst = req.codgruest, codigoProduto = req.codigoprodutos)
-        val salvar = service.save(pedido)
-        return ResponseEntity.status(HttpStatus.CREATED).body(salvar.toResponse())
+    fun savePedido(@RequestBody reqList: List<PedidoRequest>): ResponseEntity<List<PedidoResponse>> {
+        val numpedido = service.findMax()
+        val pedidos = reqList.map { req ->
+            Pedido(
+                numeroPedido = numpedido,
+                numeromesa = req.numeromesa,
+                quantidade = req.quantidade,
+                observacao = req.observacao,
+                codGruEst = req.codgruest,
+                codigoProduto = req.codigoprodutos
+            )
+        }
+        val savedPedidos = pedidos.map { service.save(it) }
+        val response = savedPedidos.map { it.toResponse() }
+        return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 }

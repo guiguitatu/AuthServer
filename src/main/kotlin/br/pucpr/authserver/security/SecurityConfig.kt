@@ -32,6 +32,7 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
             }
             .authorizeHttpRequests { requests ->
                 requests
+                    .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers(HttpMethod.GET).permitAll()
                     .requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/mesa/{mesa}").permitAll()
@@ -39,7 +40,6 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
                     .requestMatchers(HttpMethod.PUT).hasRole("ADM")
                     .requestMatchers(HttpMethod.DELETE).hasRole("ADM")
                     .requestMatchers("/error/**").permitAll()
-                    .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
 

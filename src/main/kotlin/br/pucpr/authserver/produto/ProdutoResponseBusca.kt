@@ -11,5 +11,7 @@ data class ProdutoResponseBusca(
     @field:NotNull
     val preco: Double,
     @field:NotNull
+    val cod: Long,
+    @field:NotNull
     val codGruEst: String
 )

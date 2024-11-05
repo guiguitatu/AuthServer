@@ -17,11 +17,14 @@ open class Pedido(
     @Column(nullable = false)
     var quantidade: Int,
 
+    @Column(nullable = true)
+    var observacao: String? = null,
+
     @Column(nullable = false)
     var codGruEst: Int,
 
     @Column(nullable = false)
     var codigoProduto: Int
 ) {
-    fun toResponse() = PedidoResponse(numeroPedido, codGruEst, numeromesa, quantidade, codigoProduto)
+    fun toResponse() = PedidoResponse(numeroPedido, codGruEst, numeromesa, observacao, numeromesa, codigoProduto)
 }
