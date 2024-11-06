@@ -2,15 +2,18 @@ package br.pucpr.authserver.produto
 
 import br.pucpr.authserver.exceptions.NotFoundException
 import br.pucpr.authserver.users.UsersService
+import jakarta.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 @Service
 class ProdutoService (val repository: ProdutoRepository) {
 
+    @Transactional
     fun saveProdut(produto: Produto) {
-        log.info("Produto descrição={} salvo", produto.descricao)
-        repository.save(produto)
+        val id = repository.findMax()?.plus(1) ?: 1
+        repository.insertProduto(id, produto.codigoProduto, produto.descricao, produto.preco, produto.codGruEst)
+        log.info("Produto descrição={} salvo com id={}", produto.descricao, id)
     }
 
     fun productGetById(id: Long) = repository.findById(id)

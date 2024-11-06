@@ -1,10 +1,10 @@
 package br.pucpr.authserver.produto
 
-import br.pucpr.authserver.codgruest.CodGruEstRepository
 import br.pucpr.authserver.codgruest.CodGruEstService
 import br.pucpr.authserver.exceptions.BadRequestException
 import br.pucpr.authserver.exceptions.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -13,18 +13,21 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/produto")
 class ProdutoController(
     private val service: ProdutoService,
-    private val codservice: CodGruEstService
+    private val codservice: CodGruEstService,
+    private val repository: ProdutoRepository
 ) {
 
     @Operation(summary = "Cria um ou mais Produtos")
     @PostMapping()
     fun createProducts(@RequestBody @Validated reqList: List<ProdutoRequest>): List<ProdutoResponse> {
         val produtos = reqList.map { req ->
-            val codGruEst = codservice.codGruEstGetById(req.codGruEst) ?: null
-            if (codGruEst == null) {
-                throw BadRequestException("Código de Grupo de Estoque não encontrado")
-            }
+
+            val codGruEst = codservice.codGruEstGetById(req.codGruEst) ?: throw BadRequestException("Código de Grupo de Estoque não encontrado")
+
+            val id = repository.findMax()?.plus(1) ?: 1
+            log.info("id={}", id)
             val produto = Produto(
+                id = id,
                 codigoProduto = req.codigoProduto,
                 descricao = req.descricao,
                 preco = req.preco,
@@ -78,6 +81,10 @@ class ProdutoController(
     fun deleteProduct(@PathVariable id: Long): ResponseEntity<Unit> {
         service.deleteProduct(id)
         return ResponseEntity.noContent().build()
+    }
+
+    companion object {
+        val log = LoggerFactory.getLogger(ProdutoService::class.java)
     }
 
 }
