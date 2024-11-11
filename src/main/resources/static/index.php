@@ -75,6 +75,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <button type="submit" style="width: 100% ;margin-top: 5px; font-size: 30px">Enviar</button>
     </form>
 </div>
+<?php
+$role = 'http://localhost:8080/api/users/role/' . $_COOKIE['role'];
+if (file_get_contents($role) == 'ADM') {
+    echo '
+        <header>
+        <div style="position: absolute; z-index: 5; left: 15px; height: 95%; align-items: center; display: flex; justify-content: center">
+        <a href="adm.php" style="text-decoration: none;"><button class="btnconfig">ADM</button></a>
+        </div>
+        </header>';
+}
+?>
 <script>
 
     function limpa() {

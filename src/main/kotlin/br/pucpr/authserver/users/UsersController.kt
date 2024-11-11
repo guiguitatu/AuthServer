@@ -39,6 +39,11 @@ class UsersController(private val service: UsersService) {
             .map { ResponseEntity.ok(it.toResponse()) }
             .orElse(ResponseEntity.notFound().build())
 
+    @Operation(summary = "Pega a role pelo Nome")
+    @GetMapping("/role/{name}")
+    fun getRoleByName(@PathVariable("name") name: String?): String? =
+        service.getRoleByName(name)?.role
+
     @Operation(summary = "Deleta um Usuário pelo ID")
     @DeleteMapping("/{id}")
     fun delete(@PathVariable("id") id: Long): BadRequestException {

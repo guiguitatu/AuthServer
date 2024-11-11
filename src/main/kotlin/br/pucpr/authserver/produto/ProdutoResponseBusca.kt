@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull
 
 data class ProdutoResponseBusca(
     @field:NotNull
+    val id: Long,
+    @field:NotNull
     val codigoProduto:Int,
     @field:NotBlank
     val descricao: String,

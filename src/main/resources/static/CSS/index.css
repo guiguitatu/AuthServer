@@ -201,6 +201,7 @@ option {
     width: 30px;
     background-color: #ffff;
     border: solid black 1px;
+    padding: 20px;
 }
 
 .erro {

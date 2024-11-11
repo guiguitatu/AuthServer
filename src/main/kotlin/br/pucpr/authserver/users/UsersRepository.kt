@@ -15,4 +15,6 @@ interface UsersRepository : JpaRepository<User, Long>{
 
     fun deleteUserById(id: Long) : Long
 
+    fun findRoleByName(name: String?): User?
+
 }

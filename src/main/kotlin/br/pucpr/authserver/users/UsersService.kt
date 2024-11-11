@@ -19,6 +19,8 @@ class UsersService(val repository: UsersRepository, val jwt: Jwt) {
         if (role == null) repository.findAll()
         else repository.findallByRole(role)
 
+    fun getRoleByName(name: String?) = repository.findRoleByName(name)
+
     fun login(credentials: LoginRequest): LoginResponse? {
         val user = repository.findUserByEmail(credentials.email!!) ?: return null
         if (user.password != credentials.password) return null

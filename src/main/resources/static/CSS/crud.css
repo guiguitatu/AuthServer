@@ -1,0 +1,89 @@
+body {
+    background-color: #888787;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0 20px;
+}
+
+.btnvolta {
+    width: 100px;
+    height: 50px;
+    background-color: #ec5858;
+    border: solid #252525 2px;
+    border-radius: 20px;
+}
+
+.btnincluir {
+    width: 100px;
+    height: 50px;
+    color: white;
+    background-color: #009900;
+    border: solid #252525 2px;
+    border-radius: 20px;
+}
+
+.btn-excluir {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 10px;
+}
+.btn-alterar {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.tablecodgruest {
+    width: 60vw;
+    height: auto;
+    border-collapse: collapse;
+    margin: 20px 0;
+
+}
+
+.tablecodgruest th {
+    background-color: #86ca86;
+    color: white;
+    padding: 10px
+}
+
+.tablecodgruest td {
+    padding: 10px;
+}
+.tablecodgruest tr:nth-child(even) {
+    background-color: #f2f2f2;
+    color: #000000;
+}
+
+.tablecodgruest tr:nth-child(odd) {
+    background-color: #dddddd;
+    color: #000000;
+}
+
+.formaltera {
+    width: 200px;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formaltera input {
+    width: 95%;
+    padding: 10px 0 10px 10px;
+    margin: 10px 0;
+}
+
+.formaltera select {
+    width: 100%;
+    padding: 10px 0 10px 5px;
+    margin: 10px 0;
+}
+

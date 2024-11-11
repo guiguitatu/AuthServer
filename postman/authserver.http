@@ -41,6 +41,10 @@ client.global.set("token", response.body.token)
 DELETE localhost:8080/api/users/2
 Authorization: Bearer {{token}}
 
+### Deleta produto
+DELETE localhost:8080/api/produto/11
+Authorization: Bearer {{token}}
+
 ### Pega os CodGruEst
 GET localhost:8080/api/codgruest
 
@@ -80,9 +84,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "codigoProduto": 202,
-  "descricao": "Batata",
-  "preco": 50.50,
+  "codigoProduto": 1,
+  "descricao": "Coca",
+  "preco": 5.00,
   "codGruEst": 1
 }
 

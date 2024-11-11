@@ -117,6 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['observacao'])) {
             <?php
             echo '<h3>' . ' | Mesa: ' . $mesa . '</h3>';
             ?>
+            <a href="volta.php">
+                <button class="btnsair" style="margin-left: 30px">Sair do pedido</button>
+            </a>
         </div>
     </div>
 </header>
@@ -285,8 +288,8 @@ echo '<button class="btn-flutuante" style="display:none;" id="adicionar-todos-ca
         if (!empty($_SESSION['carrinho'])) {
             foreach ($_SESSION['carrinho'] as $index => $item) {
                 echo '<div class="carrinhoitem" id="carrinho-' . $index . '">';
-                echo "<li style='font-size: 35px;'>{$item['quantidade']} x {$item['produto']} - $ {$item['preco']} - {$item['cod_gruest']} - cod {$item['cod_pro']}</li>";
-                //echo "<li style='font-size: 45px;'>{$item['quantidade']} x {$item['produto']}</li>";
+                //echo "<li style='font-size: 35px;'>{$item['quantidade']} x {$item['produto']} - $ {$item['preco']} - {$item['cod_gruest']} - cod {$item['cod_pro']}</li>";
+                echo "<li style='font-size: 45px;'>{$item['quantidade']} x {$item['produto']}</li>";
                 if ($item['observacao'] != "") {
                     echo "<p style='font-size: 35px'> Observação: {$item['observacao']}</p>";
                 }

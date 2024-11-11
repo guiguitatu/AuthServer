@@ -12,7 +12,7 @@ interface ProdutoRepository : JpaRepository<Produto, Long> {
     @Query("SELECT MAX(p.id) FROM Produto p")
     fun findMax(): Long?
 
-    @Query("SELECT new br.pucpr.authserver.produto.ProdutoResponseBusca(p.codigoProduto, p.descricao, p.preco, p.codGruEst, c.descricao) FROM Produto p INNER JOIN CodGruEst c ON p.codGruEst = c.codigo ORDER BY c.descricao")
+    @Query("SELECT new br.pucpr.authserver.produto.ProdutoResponseBusca(p.id, p.codigoProduto, p.descricao, p.preco, p.codGruEst, c.descricao) FROM Produto p INNER JOIN CodGruEst c ON p.codGruEst = c.codigo ORDER BY c.descricao")
     fun findAllProdutos(): List<ProdutoResponseBusca>
 
     @Modifying

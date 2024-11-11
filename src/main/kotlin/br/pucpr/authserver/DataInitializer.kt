@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 class DataInitializer(val jdbcTemplate: JdbcTemplate) : CommandLineRunner {
     override fun run(vararg args: String?) {
         jdbcTemplate.execute("insert into tbl_users (email, name, password, role, id) values ('gui@gmail.com', 'Guilherme', '1234', 'ADM', 1);")
+        jdbcTemplate.execute("insert into tbl_users (email, name, password, role, id) values ('roberto@gmail.com', 'Roberto', '1234', 'USER', 2);")
         jdbcTemplate.execute("INSERT INTO TBL_COD_GRU_EST (codigo, descricao) VALUES (1, 'Bebidas');")
         jdbcTemplate.execute("INSERT INTO TBL_COD_GRU_EST (codigo, descricao) VALUES (2, 'Comidas')")
         jdbcTemplate.execute("INSERT INTO TBL_COD_GRU_EST (codigo, descricao) VALUES (3, 'Sobremesas')")

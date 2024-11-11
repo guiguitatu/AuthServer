@@ -17,6 +17,7 @@ class ProdutoController(
     private val repository: ProdutoRepository
 ) {
 
+    @CrossOrigin(origins = ["http://192.168.1.38:3030"])
     @Operation(summary = "Cria um ou mais Produtos")
     @PostMapping()
     fun createProducts(@RequestBody @Validated reqList: List<ProdutoRequest>): List<ProdutoResponse> {
@@ -60,6 +61,7 @@ class ProdutoController(
         return ResponseEntity.ok(produto.toResponse())
     }
 
+    @CrossOrigin(origins = ["http://192.168.1.38:3030"])
     @Operation(summary = "Atualiza um Produto existente")
     @PutMapping("/{id}")
     fun updateProduct(
@@ -76,9 +78,13 @@ class ProdutoController(
         return ResponseEntity.ok(savedProduto.toResponse())
     }
 
+    @CrossOrigin(origins = ["http://192.168.1.38:3030"])
     @Operation(summary = "Deleta um Produto existente")
     @DeleteMapping("/{id}")
     fun deleteProduct(@PathVariable id: Long): ResponseEntity<Unit> {
+        if (!service.productGetById(id).isPresent) {
+            throw NotFoundException("Produto não encontrado")
+        }
         service.deleteProduct(id)
         return ResponseEntity.noContent().build()
     }
