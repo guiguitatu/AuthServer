@@ -6,6 +6,11 @@ if (!$_COOKIE['token']) {
     exit();
 }
 
+if (!$_COOKIE['role']) {
+    header('Location: index.php');
+    exit();
+}
+
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "http://localhost:8080/api/produto");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -36,7 +41,8 @@ foreach ($produtos as $produto) {
 </head>
 <body>
 <h1>CRUD de Produtos</h1>
-<a href="index.php"><button class="btnvolta">Voltar</button></a>
+<a href="index.php"><button class="btnvolta" style="margin: 10px">Voltar</button></a>
+<a href="criaproduto.php"><button class="btnvolta" style="background-color: #009900;">Inserir</button></a>
 <?php foreach ($produtosPorCodGruEst as $codGruEst => $produtos): ?>
     <h2>Grupo: <?php echo htmlspecialchars($codGruEst); ?></h2>
     <table class="tablecodgruest">

@@ -26,6 +26,8 @@ class ProdutoService (val repository: ProdutoRepository) {
         return repository.findByCodigoProduto(codigoProduto)
     }
 
+    fun getCodByCod(cod: Int) = repository.findCodByCod(cod)
+
     fun deleteProduct(id: Long) {
         log.info("Produto id={} deletado", id)
         repository.deleteById(id)

@@ -76,8 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </div>
 <?php
-$role = 'http://localhost:8080/api/users/role/' . $_COOKIE['role'];
-if (file_get_contents($role) == 'ADM') {
+if ($_COOKIE['role']) {
     echo '
         <header>
         <div style="position: absolute; z-index: 5; left: 15px; height: 95%; align-items: center; display: flex; justify-content: center">

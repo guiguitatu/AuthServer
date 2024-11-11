@@ -57,9 +57,15 @@ class ProdutoController(
     @Operation(summary = "Pega o Produto atravéz do Código")
     @GetMapping("/codigo/{codigoProduto}")
     fun getProdutoByCodigo(@PathVariable("codigoProduto") codigoProduto: Int): ResponseEntity<ProdutoResponse> {
-        val produto = service.getProdutoByCodigo(codigoProduto) ?: throw NotFoundException("Produto não encontrado")
-        return ResponseEntity.ok(produto.toResponse())
+    return service.getProdutoByCodigo(codigoProduto)
+        ?.let { ResponseEntity.ok(it.toResponse()) }
+        ?: throw NotFoundException("Produto não encontrado")
     }
+
+    @GetMapping("/cod/{codigoproduto}")
+    fun getCodProbyCodPro(@PathVariable("codigoproduto") codigoproduto: Int): Int  =
+        service.getCodByCod(codigoproduto) ?: throw NotFoundException("Produto não encontrado")
+
 
     @CrossOrigin(origins = ["http://192.168.1.38:3030"])
     @Operation(summary = "Atualiza um Produto existente")

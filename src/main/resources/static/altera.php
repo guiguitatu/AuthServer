@@ -5,9 +5,10 @@ if (!$_COOKIE['token']) {
     header('Location: login.php');
     exit();
 }
-$role = 'http://localhost:8080/api/users/role/' . $_COOKIE['role'];
-if (file_get_contents($role) != 'ADM') {
+
+if (!$_COOKIE['role']) {
     header('Location: index.php');
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

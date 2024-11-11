@@ -71,9 +71,9 @@ Authorization: Bearer {{token}}
 
 [
   {
-    "codigoProduto": 101,
-    "descricao": "bujão",
-    "preco": 80,
+    "codigoProduto": 100,
+    "descricao": "coquinha hmmm",
+    "preco": 2,
     "codGruEst": 1
   }
 ]

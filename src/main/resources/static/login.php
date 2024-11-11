@@ -27,8 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $result = json_decode($response, true);
 
+        $role = 'http://localhost:8080/api/users/role/' . $_POST['nome'];
+        if (file_get_contents($role) == 'ADM') {
+            setcookie('role', true, time() + 60 * 60 * 24, '/');
+        }
+
         setcookie('token', $result['token'], time() + 60 * 60 * 24, '/');
-        setcookie('role', $nome, time() + 60 * 60 * 24, '/');
         header('Location: index.php');
         exit();
 
